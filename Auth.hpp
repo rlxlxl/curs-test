@@ -4,10 +4,12 @@
 #include <string>
 #include <map>
 #include <crow.h>
+#include <mutex>
 
 class Auth {
 private:
     std::map<std::string, std::string> sessions; // session_id -> username
+    std::mutex sessions_mutex; // Для потокобезопасности
     
 public:
     std::string createSession(const std::string& username);
