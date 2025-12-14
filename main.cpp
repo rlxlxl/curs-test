@@ -63,16 +63,18 @@ int main() {
     
     CROW_ROUTE(app, "/<string>")
     ([](const std::string& filename) {
-        std::string filepath = filename;
-        if (filename == "main.html") {
-            filepath = "web/main.html";
-        } else if (filename == "login.html") {
-            filepath = "web/login.html";
-        }
+        std::string filepath = "web/" + filename;
         
         std::string content = read_file(filepath);
         if (content.empty()) {
-            return crow::response(404, "File not found: " + filepath);
+            // Если файл не найден, возвращаем главную страницу
+            content = read_file("web/login.html");
+            if (content.empty()) {
+                return crow::response(404, "File not found");
+            }
+            crow::response res(content);
+            res.set_header("Content-Type", "text/html");
+            return res;
         }
         
         // Определяем Content-Type
@@ -83,6 +85,8 @@ int main() {
             content_type = "text/css";
         } else if (filepath.find(".js") != std::string::npos) {
             content_type = "application/javascript";
+        } else if (filepath.find(".json") != std::string::npos) {
+            content_type = "application/json";
         }
         
         crow::response res(content);
