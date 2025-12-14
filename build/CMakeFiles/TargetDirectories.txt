@@ -1,0 +1,3 @@
+/Users/slavavikentev/Desktop/учеба/семестр 3/прога/curstest/build/CMakeFiles/integrators_backend.dir
+/Users/slavavikentev/Desktop/учеба/семестр 3/прога/curstest/build/CMakeFiles/edit_cache.dir
+/Users/slavavikentev/Desktop/учеба/семестр 3/прога/curstest/build/CMakeFiles/rebuild_cache.dir

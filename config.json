@@ -1,0 +1,9 @@
+{
+    "db_host": "localhost",
+    "db_port": "5432",
+    "db_name": "integrators_db",
+    "db_user": "postgres",
+    "db_password": "",
+    "server_port": 8080,
+    "session_secret": "your-secret-key-here"
+}

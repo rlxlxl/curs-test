@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вход - Интеграторы ИТ</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+        }
+        
+        .login-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            width: 300px;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 2rem;
+        }
+        
+        .input-group {
+            margin-bottom: 1rem;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #666;
+        }
+        
+        input {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        
+        .role-selection {
+            margin: 1rem 0;
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+        
+        .role-btn {
+            padding: 0.5rem 1rem;
+            border: 2px solid #667eea;
+            background: white;
+            color: #667eea;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        .role-btn.active {
+            background: #667eea;
+            color: white;
+        }
+        
+        .login-btn {
+            width: 100%;
+            padding: 0.75rem;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .login-btn:hover {
+            background: #5a67d8;
+        }
+        
+        .error {
+            color: #e53e3e;
+            text-align: center;
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h1>Вход в систему</h1>
+        
+        <div class="role-selection">
+            <button class="role-btn active" data-role="user">Пользователь</button>
+            <button class="role-btn" data-role="admin">Администратор</button>
+        </div>
+        
+        <div class="input-group">
+            <label for="username">Логин:</label>
+            <input type="text" id="username" placeholder="Введите логин">
+        </div>
+        
+        <div class="input-group">
+            <label for="password">Пароль:</label>
+            <input type="password" id="password" placeholder="Введите пароль">
+        </div>
+        
+        <button class="login-btn" onclick="login()">Войти</button>
+        
+        <div id="error" class="error"></div>
+    </div>
+    
+    <script>
+        let selectedRole = 'user';
+        
+        document.querySelectorAll('.role-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.role-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                selectedRole = btn.dataset.role;
+                
+                // Устанавливаем логины по умолчанию
+                if (selectedRole === 'admin') {
+                    document.getElementById('username').value = 'admin';
+                    document.getElementById('password').value = 'admin123';
+                } else {
+                    document.getElementById('username').value = 'user1';
+                    document.getElementById('password').value = 'password123';
+                }
+            });
+        });
+        
+        function login() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            fetch('/api/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ username, password })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    window.location.href = '/main.html';
+                } else {
+                    document.getElementById('error').textContent = 'Ошибка входа';
+                }
+            })
+            .catch(error => {
+                document.getElementById('error').textContent = 'Ошибка соединения';
+            });
+        }
+        
+        // Автозаполнение для демонстрации
+        document.getElementById('username').value = 'user1';
+        document.getElementById('password').value = 'password123';
+    </script>
+</body>
+</html>
